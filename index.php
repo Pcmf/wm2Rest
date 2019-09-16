@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 } elseif ($_SERVER['REQUEST_METHOD'] == "PUT") {
     $postBody = file_get_contents("php://input");
     $postBody = json_decode($postBody);
-    if($_GET['empresas']){
+    if($_GET['url']=="empresas"){
         $ob = new Empresa();
         echo json_encode($ob->edit($_GET['id'], $postBody));
         http_response_code(200);

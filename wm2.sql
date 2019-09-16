@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2019 at 10:33 AM
+-- Generation Time: Sep 17, 2019 at 01:35 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -75,12 +75,12 @@ CREATE TABLE `empresas` (
   `id` int(11) NOT NULL,
   `nome` varchar(150) NOT NULL,
   `area` int(11) NOT NULL,
-  `rua` varchar(255) NOT NULL,
-  `localidade` varchar(150) NOT NULL,
-  `cpostal` varchar(10) NOT NULL,
+  `rua` varchar(255) DEFAULT NULL,
+  `localidade` varchar(150) DEFAULT NULL,
+  `cpostal` varchar(10) DEFAULT NULL,
   `longitude` float DEFAULT NULL,
   `latitude` float DEFAULT NULL,
-  `responsavel` int(11) NOT NULL,
+  `responsavel` int(11) DEFAULT NULL,
   `diasfuncionamento` varchar(255) DEFAULT NULL,
   `horario` varchar(255) DEFAULT NULL,
   `tipospagamento` varchar(255) DEFAULT NULL,
@@ -94,6 +94,13 @@ CREATE TABLE `empresas` (
   `token` varchar(255) DEFAULT NULL,
   `hashcode` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `empresas`
+--
+
+INSERT INTO `empresas` (`id`, `nome`, `area`, `rua`, `localidade`, `cpostal`, `longitude`, `latitude`, `responsavel`, `diasfuncionamento`, `horario`, `tipospagamento`, `aberto`, `descricao`, `fotos`, `outrasinfo`, `contactos`, `email`, `pass`, `token`, `hashcode`) VALUES
+(1, 'Torralta', 1, 'Av. Zeferino', 'Penafiel', '4560-452', 0, 0, 3, '', '', '', 0, '', '', '', '', 'teste@email.com', 'xpto', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -125,18 +132,18 @@ CREATE TABLE `idiomas` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `menu`
+-- Table structure for table `menus`
 --
 
-CREATE TABLE `menu` (
+CREATE TABLE `menus` (
   `empresa` int(11) NOT NULL,
   `familia` int(11) NOT NULL,
-  `artigo` int(11) NOT NULL,
-  `posicao` int(11) NOT NULL,
-  `preco` decimal(6,2) NOT NULL,
+  `artigo` int(11) NOT NULL DEFAULT 0,
+  `posicao` int(11) DEFAULT NULL,
+  `preco` decimal(6,2) DEFAULT NULL,
   `promocao` int(11) DEFAULT NULL,
   `precopromo` decimal(6,2) DEFAULT NULL,
-  `disponivel` tinyint(4) NOT NULL DEFAULT 1
+  `disponivel` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -212,9 +219,9 @@ ALTER TABLE `idiomas`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menu`
+-- Indexes for table `menus`
 --
-ALTER TABLE `menu`
+ALTER TABLE `menus`
   ADD PRIMARY KEY (`empresa`,`familia`,`artigo`);
 
 --
@@ -249,7 +256,7 @@ ALTER TABLE `artigos`
 -- AUTO_INCREMENT for table `empresas`
 --
 ALTER TABLE `empresas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `familias`

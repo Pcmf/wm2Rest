@@ -6,37 +6,23 @@
  * and open the template in the editor.
  */
 require_once './db/DB.php';
+
 /**
  * Description of Empresa
  *
  * @author pedro
  */
 class Empresa {
+
     private $db;
-    private $id;
-    private $nome;
-    private $area;
-    private $rua;
-    private $localidade;
-    private $cpostal;
-    private $longitude;
-    private $latitude;
-    private $responsavel;
-    private $diasDescanso;
-    private $horaAbertura;
-    private $horaFecho;
-    private $tiposPagamento;
-    private $aberto;
-    private $descricao;
-    private $outrasInfo;
-    private $contactos;
-    private $email;
-    private $idiomas;
-    private $token;
-    private $hashcode;
+
 
     public function __construct() {
         $this->db = new DB();
+    }
+
+    public function get($id) {
+        return $this->db->query("SELECT * FROM empresas WHERE id=:id" , [':id'=>$id]);
     }
     /**
      * 
@@ -47,36 +33,65 @@ class Empresa {
      * @return int
      */
     public function register($nome, $area, $email, $pass) {
-        $this->db->query(sprintf("INSERT INTO empresas(nome, area, email, pass) "
-                . " VALUES(:nome, :area, :email, :pass) ", 
-                [':nome'=>$nome, ':area'=>$area, ':email'=>$email, ':pass'=>$pass]));
+        $this->db->query("INSERT INTO empresas(nome, area, email, pass) "
+                        . " VALUES(:nome, :area, :email, :pass) ",
+                        [':nome' => $nome, ':area' => $area, ':email' => $email, ':pass' => $pass]);
         return $this->db->lastInsertId();
     }
-    
+
+    /**
+     * Atualizar empresas
+     * @param type $id
+     * @param type $param
+     * @return string
+     */
     public function edit($id, $param) {
-        !isset($param->rua) ? $param->rua='': null;
-        !isset($param->localidade) ? $param->localidade='': null;
-        !isset($param->cpostal) ? $param->cpostal='': null;
-        !isset($param->longitude) ? $param->longitude='': null;
-        !isset($param->latitude) ? $param->latitude='': null;
-        !isset($param->responsavel) ? $param->responsavel=0: null;
-        !isset($param->diasdescanso) ? $param->diasdescanso='': null;
-        !isset($param->horario) ? $param->horario='': null;
-        !isset($param->tipospagamento) ? $param->tipospagamento='': null;
-        !isset($param->aberto) ? $param->aberto=1: null;
-        !isset($param->fotos) ? $param->fotos='': null;
-        !isset($param->descricao) ? $param->descricao='': null;
-        !isset($param->outrasinfo) ? $param->outrasinfo='': null;
-        !isset($param->contactos) ? $param->contactos='': null;
-        
-        $this->db->query(sprintf("UPDATE empresa SET rua=:rua, localidae=:localidade,"
-                . " cpostal=:cpostal, latitude=:latitude, longitude=:longitude, responsavel=:responsavel,"
-                . " diasdescanso=:diasdescanso, horario=:horario, aberto=:aberto, fotos=:fotos, "
-                . "descricao=:descricao, outrasinfo=:outrasinfo, contactos=:contactos"
-                . " WHERE id=:id",
-                $param->rua, $param->localidade, $param->cpostal, $param->longitude, $param->latitude,
-                $param->responsavel, $param->diasdescanso, $param->horario, $param ->tipospagamento,
-                $param->abero, $param->fotos, $param->descricao, $param->outrasinfo, $param->contactos,
-                $id));
+        if($param->nome != '') {
+            !isset($param->localidade) ? $param->localidade = '' : null;
+            !isset($param->rua) ? $param->rua = '' : null;
+            !isset($param->localidade) ? $param->localidade = '' : null;
+            !isset($param->cpostal) ? $param->cpostal = '' : null;
+            !isset($param->longitude) ? $param->longitude = '' : null;
+            !isset($param->latitude) ? $param->latitude = '' : null;
+            !isset($param->responsavel) ? $param->responsavel = 0 : null;
+            !isset($param->diasfuncionamento) ? $param->diasfuncionamento = '' : null;
+            !isset($param->horario) ? $param->horario = '' : null;
+            !isset($param->tipospagamento) ? $param->tipospagamento = '' : null;
+            !isset($param->aberto) ? $param->aberto = 1 : null;
+            !isset($param->fotos) ? $param->fotos = '' : null;
+            !isset($param->descricao) ? $param->descricao = '' : null;
+            !isset($param->outrasinfo) ? $param->outrasinfo = '' : null;
+            !isset($param->contactos) ? $param->contactos = '' : null;
+
+            $this->db->query("UPDATE empresas SET nome=:nome, area=:area, rua=:rua, localidade=:localidade,"
+                            . " cpostal=:cpostal, latitude=:latitude, longitude=:longitude, responsavel=:responsavel,"
+                            . " diasfuncionamento=:diasfuncionamento, horario=:horario, tipospagamento=:tipospagamento, aberto=:aberto, fotos=:fotos, "
+                            . "descricao=:descricao, outrasinfo=:outrasinfo, contactos=:contactos"
+                            . " WHERE id=:id", [':nome'=>$param->nome, ':area'=>$param->area,
+                            ':rua'=>$param->rua, ':localidade'=>$param->localidade, ':cpostal'=>$param->cpostal,
+                            ':longitude'=>$param->longitude, ':latitude'=>$param->latitude, ':responsavel'=>$param->responsavel,
+                            ':diasfuncionamento'=>$param->diasfuncionamento, ':horario'=>$param->horario, ':tipospagamento'=>$param->tipospagamento,
+                            ':aberto'=>$param->aberto, ':fotos'=>$param->fotos, ':descricao'=>$param->descricao,
+                            ':outrasinfo'=>$param->outrasinfo, ':contactos'=>$param->contactos, ':id'=>$id]);
+             $erro = '{
+                "erro":false, 
+                "msg":"Registo alterado"
+            }';
+        } else {
+            $erro = '{
+                "erro":true, 
+                "msg":"O nome da empresa não pode estar em branco"
+            }';
+
+        }
+        return $erro;
     }
-}
+    /**
+     * Remover registo
+     * @param type $id
+     * @return string
+     */
+    public function delete($id) {
+        return "not working yet";
+    }
+}   

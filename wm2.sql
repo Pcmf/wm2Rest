@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 17, 2019 at 01:35 AM
+-- Generation Time: Sep 20, 2019 at 09:56 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -34,6 +34,18 @@ CREATE TABLE `areas` (
   `descricao` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `areas`
+--
+
+INSERT INTO `areas` (`id`, `nome`, `descricao`) VALUES
+(1, 'Restaurante', NULL),
+(2, 'Tasca', NULL),
+(3, 'Bar', NULL),
+(4, 'Café', NULL),
+(5, 'Cervejaria', NULL),
+(6, 'Marisqueira', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -49,6 +61,17 @@ CREATE TABLE `artigos` (
   `imagem` varchar(255) DEFAULT NULL,
   `ativo` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `artigos`
+--
+
+INSERT INTO `artigos` (`id`, `empresa`, `nome`, `familia`, `descricao`, `imagem`, `ativo`) VALUES
+(1, 1, 'Artigo A', 1, 'descricao artigo A', NULL, 1),
+(4, 1, 'Artigo B', 1, 'descricao artigo B', '', 1),
+(5, 1, 'Artigo C', 3, 'descricao artigo C', 'xptg_C.jpg', 1),
+(6, 1, 'Artigo D', 2, 'descricao artigo D', 'xptg_D.jpg', 1),
+(7, 1, 'Artigo E', 2, 'descricao artigo E', 'xptg.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -100,7 +123,8 @@ CREATE TABLE `empresas` (
 --
 
 INSERT INTO `empresas` (`id`, `nome`, `area`, `rua`, `localidade`, `cpostal`, `longitude`, `latitude`, `responsavel`, `diasfuncionamento`, `horario`, `tipospagamento`, `aberto`, `descricao`, `fotos`, `outrasinfo`, `contactos`, `email`, `pass`, `token`, `hashcode`) VALUES
-(1, 'Torralta', 1, 'Av. Zeferino', 'Penafiel', '4560-452', 0, 0, 3, '', '', '', 0, '', '', '', '', 'teste@email.com', 'xpto', NULL, NULL);
+(1, 'Torralta', 1, 'Av. Zeferino', 'Penafiel', '4560-452', 0, 0, 2, '', '', '', 0, '', '', '', '', 'teste@email.com', 'xpto', NULL, NULL),
+(2, 'Empresa B', 1, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 'email.b@g.c', 'xptg_B', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,10 +135,19 @@ INSERT INTO `empresas` (`id`, `nome`, `area`, `rua`, `localidade`, `cpostal`, `l
 CREATE TABLE `familias` (
   `id` int(11) NOT NULL,
   `empresa` int(11) NOT NULL,
-  `nome` int(255) NOT NULL,
-  `imagem` int(255) DEFAULT NULL,
+  `nome` varchar(255) NOT NULL,
+  `imagem` varchar(255) DEFAULT NULL,
   `descricao` varchar(1024) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `familias`
+--
+
+INSERT INTO `familias` (`id`, `empresa`, `nome`, `imagem`, `descricao`) VALUES
+(1, 2, 'Carnes', 'img_famC.jpg', 'descricao familia C'),
+(2, 1, 'Vinhos', 'img_famC.jpg', 'descricao familia C'),
+(3, 1, 'Cervejas', 'img_famC.jpg', 'descricao familia C');
 
 -- --------------------------------------------------------
 
@@ -177,6 +210,14 @@ CREATE TABLE `responsaveis` (
   `telemovel` varchar(15) DEFAULT NULL,
   `horacontacto` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `responsaveis`
+--
+
+INSERT INTO `responsaveis` (`id`, `nome`, `cargo`, `email`, `telefone`, `telemovel`, `horacontacto`) VALUES
+(1, 'Responsavel A', 'Gerente', 'resp_a@g.c', '22332332', '9192929', ''),
+(2, 'Responsavel B', 'Dono', 'resp_b@g.c', '234332332', '9692929', '12h 20h');
 
 --
 -- Indexes for dumped tables
@@ -244,25 +285,25 @@ ALTER TABLE `responsaveis`
 -- AUTO_INCREMENT for table `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `artigos`
 --
 ALTER TABLE `artigos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `empresas`
 --
 ALTER TABLE `empresas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `familias`
 --
 ALTER TABLE `familias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `idiomas`
@@ -274,7 +315,7 @@ ALTER TABLE `idiomas`
 -- AUTO_INCREMENT for table `responsaveis`
 --
 ALTER TABLE `responsaveis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,5 +1,5 @@
 <?php
-require_once '../db/DB.php';
+require_once './db/DB.php';
 /**
  * Description of Familia
  *
@@ -16,10 +16,10 @@ class Familia {
      * @param obj $param
      * @return int
      */
-    public function create($param) {
-        $this->db->query("INSERT INTO familias(empresa, nome, imagem, obs) "
-                . " VALUES(:empresa, nome, imagem, obs) ", 
-                [':empresa'=>$param->empresa, ':nome'=>$param->nome, ':imagem'=>$param->imagem, ':obs'=>$param->obs]);
+    public function create($empresa,$param) {
+        $this->db->query("INSERT INTO familias(empresa, nome, imagem, descricao) "
+                . " VALUES(:empresa, :nome, :imagem, :descricao) ", 
+                [':empresa'=>$empresa, ':nome'=>$param->nome, ':imagem'=>$param->imagem, ':descricao'=>$param->descricao]);
         return $this->db->lastInsertId();
     }
     /**
@@ -28,19 +28,20 @@ class Familia {
      * @param obj $param
      * @return obj
      */
-    public function edit($id,$param) {
-        return $this->db->query("UPDATE familias SET empresa=:empresa, nome=:nome, imagem=:imagem, obs=:obs "
-                . " WHERE id=:id ",
-                [':empresa'=>$param->empresa, ':nome'=>$param->nome, ':imagem'=>$param->imagem, ':obs'=>$param->obs,
-                    ':id'=>$id]);        
+    public function edit($empresa, $id,$param) {
+        return $this->db->query("UPDATE familias SET empresa=:empresa, nome=:nome, imagem=:imagem, descricao=:descricao "
+                . " WHERE id=:id AND empresa=:empresa",
+                [':nome'=>$param->nome, ':imagem'=>$param->imagem, ':descricao'=>$param->descricao,
+                    ':id'=>$id, ':empresa'=>$empresa]);        
     }
     /**
      * 
      * @param int $id
      * @return obj
      */
-    public function getOne($id) {
-        return $this->db->query("SELECT * FROM familias WHERE id=:id ", [':id'=>$id]);
+    public function getOne($empresa, $id) {
+        return $this->db->query("SELECT * FROM familias WHERE id=:id AND empresa=:empresa", 
+                [':id'=>$id, ':empresa'=>$empresa]);
     }
     /**
      * 

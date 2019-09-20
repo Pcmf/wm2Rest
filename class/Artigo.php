@@ -16,8 +16,9 @@ class Artigo {
      * @param type $id
      * @return type
      */
-    public function getOne($id) {
-        return $this->db->query("SELECT * FROM artigos WHERE id=:id", [':id'=>$id]);
+    public function getOne($empresa, $id) {
+        return $this->db->query("SELECT * FROM artigos WHERE id=:id AND empresa=:empresa",
+                [':id'=>$id, ':empresa'=>$empresa]);
     }
     /**
      * 
@@ -42,10 +43,10 @@ class Artigo {
      * @param type $param
      * @return type
      */
-    public function create($param) {
+    public function create($empresa,$param) {
         $this->db->query("INSERT INTO artigos(empresa, nome, familia, descricao, imagem, ativo) "
                 . " VALUES(:empresa, :nome, :familia, :descricao, :imagem, 1) ",
-                [':empresa'=>$param->empresa, ':nome'=>$param->nome, ':familia'=>$param->familia,
+                [':empresa'=>$empresa, ':nome'=>$param->nome, ':familia'=>$param->familia,
                 ':descricao'=>$param->descricao, ':imagem'=>$param->imagem]);
         return $this->db->lastInsertId();
     }
@@ -55,13 +56,19 @@ class Artigo {
      * @param type $param
      * @return string
      */
-    public function edit($id, $param) {
-        if($nome){
+    public function edit($empresa, $id, $param) {
+        if($param->nome){
         return $this->db->query("UPDATE artigos SET nome=:nome, familia=:familia, descricao=:descricao, imagem=:imagem, ativo=:ativo "
-                . " WHERE id=:id", [':nome'=>$param->nome, ':familia'=>$param->familia, ':descricao'=>$param->descricao,
-                    ':imagem'=>$param->imagem, ':ativo'=>$param->ativo, ':id'=>$id]);
+                . " WHERE id=:id AND empresa=:empresa",
+                    [':nome'=>$param->nome, ':familia'=>$param->familia, ':descricao'=>$param->descricao,
+                    ':imagem'=>$param->imagem, ':ativo'=>$param->ativo, ':id'=>$id, ':empresa'=>$empresa]);
         } else {
             return "erro";
         }
+    }
+    
+    public function delete($empresa, $id){
+        return $this->db->query("DELETE FROM artigos WHERE empresa=:empresa AND id=:id",
+                [':empresa'=>$empresa, ':id'=>$id]);
     }
 }

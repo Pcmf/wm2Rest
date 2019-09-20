@@ -1,5 +1,5 @@
 <?php
-require_once '../db/DB.php';
+require_once './db/DB.php';
 
 /**
  * Description of Area

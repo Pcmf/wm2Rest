@@ -20,9 +20,25 @@ class Empresa {
     public function __construct() {
         $this->db = new DB();
     }
-
-    public function get($id) {
-        return $this->db->query("SELECT * FROM empresas WHERE id=:id" , [':id'=>$id]);
+    /**
+     * 
+     * @param int $empresa
+     * @return obj
+     */
+    public function getOne($empresa) {
+        return $this->db->query("SELECT E.*, A.nome AS areanome, A.descricao AS areadesc"
+                . " FROM empresas E"
+                . " INNER JOIN areas A ON A.id=E.area "
+                . " WHERE E.id=:id" , [':id'=>$empresa]);
+    }
+    /**
+     * 
+     * @return obj
+     */
+    public function getAll() {
+        return $this->db->query("SELECT E.*, A.nome AS areanome, A.descricao AS areadesc"
+                . " FROM empresas E"
+                . " INNER JOIN areas A ON A.id=E.area");
     }
     /**
      * 

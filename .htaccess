@@ -9,6 +9,19 @@ Header always set Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
 #POST do LOGIN 
 RewriteRule ^login index.php?url=login [L,QSA]
 
-#Empresa 
+#Empresas 
 RewriteRule ^empresas/([0-9]+) index.php?url=empresas&id=$1 [L,QSA]
 RewriteRule ^empresas index.php?url=empresas [L,QSA]
+
+#Artigos 
+RewriteRule ^artigos/([0-9]+)/([0-9]+) index.php?url=artigos&empresa=$1&id=$2 [L,QSA]
+RewriteRule ^artigos/([0-9]+) index.php?url=artigos&empresa=$1 [L,QSA]
+
+#Familias 
+RewriteRule ^familias/([0-9]+)/([0-9]+) index.php?url=familias&empresa=$1&id=$2 [L,QSA]
+RewriteRule ^familias/([0-9]+) index.php?url=familias&empresa=$1 [L,QSA]
+RewriteRule ^familias index.php?url=familias [L,QSA]
+
+#Responsavel
+RewriteRule ^responsaveis/([0-9]+) index.php?url=responsaveis&id=$1 [L,QSA]
+RewriteRule ^responsaveis index.php?url=responsaveis [L,QSA]

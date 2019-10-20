@@ -16,7 +16,7 @@ require_once './class/Menu.php';
 require_once './class/Responsavel.php';
 require_once './class/Promocao.php';
 require_once './class/Area.php';
-
+require_once './class/UpImage.php';
 
 
 
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $postBody = json_decode($postBody);
     if($_GET['url']=="login"){
         $ob = new Empresa();
-        echo json_encode($ob->login($postBody));
+        echo json_encode($ob->checkuser($postBody->email, $postBody->password));
         http_response_code(200);
     } elseif ($_GET['url']=="empresas") {
         $ob = new Empresa();
@@ -42,7 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $ob = new Responsavel();
         echo json_encode($ob->create($postBody));
         http_response_code(200);        
-    }
+    } elseif ($_GET['url'] == "upimage") {
+        $ob = new UpImage();
+        return json_encode($ob->uploadImage($postBody));
+        http_response_code(200);
+        
+   } 
     
     
 // PUTS
@@ -64,6 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     } elseif($_GET['url']=="familias"){
         $ob = new Familia();
         if(isset($_GET['id'])){
+            echo json_encode($ob->edit($_GET['empresa'], $_GET['id'], $postBody));
+        } else {
+            echo json_encode($ob->create($_GET['empresa'], $postBody));
+        }
+        http_response_code(200);
+    } elseif($_GET['url']=="menu"){
+        $ob = new Menu();
+        if(isset($_GET['artigo'])){
             echo json_encode($ob->edit($_GET['empresa'], $_GET['id'], $postBody));
         } else {
             echo json_encode($ob->create($_GET['empresa'], $postBody));
@@ -98,6 +111,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $ob = new Familia();
         if(isset($_GET['id'])){
             echo json_encode($ob->getOne($_GET['empresa'], $_GET['id']));
+            http_response_code(200);
+        } else {
+            echo json_encode($ob->getAll($_GET['empresa']));
+            http_response_code(200);
+        }
+    } elseif($_GET['url']=="menu"){
+        $ob = new Menu();
+        if(isset($_GET['familia'])){
+            echo json_encode($ob->getByFamilia($_GET['empresa'], $_GET['familia']));
             http_response_code(200);
         } else {
             echo json_encode($ob->getAll($_GET['empresa']));

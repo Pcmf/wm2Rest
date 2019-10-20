@@ -25,3 +25,9 @@ RewriteRule ^familias index.php?url=familias [L,QSA]
 #Responsavel
 RewriteRule ^responsaveis/([0-9]+) index.php?url=responsaveis&id=$1 [L,QSA]
 RewriteRule ^responsaveis index.php?url=responsaveis [L,QSA]
+
+#Menu
+RewriteRule ^menu/([0-9]+)/([0-9]+) index.php?url=menu&empresa=$1&familia=$2 [L,QSA]
+RewriteRule ^menu/([0-9]+) index.php?url=menu&empresa=$1 [L,QSA]
+#Upload de Imagens
+RewriteRule ^upimage index.php?url=upimage [L,QSA]

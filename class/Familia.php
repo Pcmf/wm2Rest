@@ -16,10 +16,11 @@ class Familia {
      * @param obj $param
      * @return int
      */
-    public function create($empresa,$param) {
+    public function create($empresa, $obj) {
         $this->db->query("INSERT INTO familias(empresa, nome, imagem, descricao) "
                 . " VALUES(:empresa, :nome, :imagem, :descricao) ", 
-                [':empresa'=>$empresa, ':nome'=>$param->nome, ':imagem'=>$param->imagem, ':descricao'=>$param->descricao]);
+                [':empresa'=>$empresa, ':nome'=>$obj->nome, ':imagem'=>$obj->imagem,
+                    ':descricao'=>$obj->descricao]);
         return $this->db->lastInsertId();
     }
     /**

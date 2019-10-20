@@ -1,7 +1,7 @@
 <?php
 
 require_once './db/DB.php';
-
+require_once 'Familia.php';
 /**
  * Description of Menu
  *
@@ -9,15 +9,19 @@ require_once './db/DB.php';
  */
 class Menu {
     private $db;
-    
+    private $Familia;
+
+
     public function __construct() {
         $this->db = new DB();
+        $this->Familia = new Familia();
     }
     
-    public function create($empresa,$familia) {
+    public function create($empresa, $obj) {
+        $id = $this->Familia->create($empresa, $obj);
         $this->db->query("INSERT INTO menus(empresa, familia, artigo) VALUES(:empresa, :familia, 0)",
-                [':empresa'=>$empresa, ':familia'=>$familia]);
-        return $this->db->lastInsertId();
+                [':empresa'=>$empresa, ':familia'=>$id]);
+        return $this->getAll($empresa);
     }
     
     public function edit($empresa,$familia,$artigo,$param) {
@@ -40,8 +44,17 @@ class Menu {
     }
     
         public function getAll($empresa) {
-        return $this->db->query("SELECT * FROM menus WHERE empresa=:empresa",
-                [':empresa'=>$empresa] );        
+        $resp = array();   
+        $result = $this->db->query("SELECT F.* FROM menus M "
+                . " INNER JOIN familias F ON F.id=M.familia "
+                . " WHERE M.empresa=:empresa GROUP BY F.id",
+                [':empresa'=>$empresa] ); 
+        foreach ($result AS $k){
+            $result0 = $this->db->query("SELECT * FROM artigos WHERE familia=:familia ", [':familia'=>$k['id']]);
+            $k['artigos'] = $result0;
+            array_push($resp, $k);
+        }
+        return $resp;
     }
     
     public function delete($empresa, $familia,$artigo) {
